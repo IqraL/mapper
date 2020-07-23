@@ -7,11 +7,14 @@ import {
 } from "react-azure-maps";
 import { AuthenticationType } from "azure-maps-control";
 
-const option: IAzureMapOptions = {
+const option = {
   authOptions: {
     authType: AuthenticationType.subscriptionKey,
     subscriptionKey: "Awr0ZM1qOOrNpq8sBxfE68_cpc4DuEuHacPtJvtveCQ",
   },
+  zoom: 6,
+  showLogo: false,
+  center: [-2.3517, 53.4215],
 };
 
 function App() {
@@ -24,8 +27,8 @@ function App() {
   );
 }
 
-const DefaultMap: React.FC = () => (
-  <AzureMapsProvider>
+const DefaultMap = () => (
+  <AzureMapsProvider showLogo={false}>
     <AzureMap options={option}></AzureMap>
   </AzureMapsProvider>
 );
