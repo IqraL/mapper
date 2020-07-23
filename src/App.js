@@ -1,36 +1,21 @@
 import React from "react";
-
-import {
-  AzureMap,
-  AzureMapsProvider,
-  IAzureMapOptions,
-} from "react-azure-maps";
-import { AuthenticationType } from "azure-maps-control";
-
-const option = {
-  authOptions: {
-    authType: AuthenticationType.subscriptionKey,
-    subscriptionKey: "Awr0ZM1qOOrNpq8sBxfE68_cpc4DuEuHacPtJvtveCQ",
-  },
-  zoom: 6,
-  showLogo: false,
-  center: [-2.3517, 53.4215],
+import { Map, Marker, Popup, TileLayer } from "react-leaflet";
+import { Icon } from "leaflet";
+const leafletContainer = {
+  height: "100vh",
+  width: "100vw",
 };
-
 function App() {
   return (
     <div className="App">
-      <div style={{ height: "100vh" }}>
-        <DefaultMap />
-      </div>
+      <Map style={leafletContainer} center={[53.480709, -2.23438]} zoom={8}>
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        />
+      </Map>
     </div>
   );
 }
-
-const DefaultMap = () => (
-  <AzureMapsProvider showLogo={false}>
-    <AzureMap options={option}></AzureMap>
-  </AzureMapsProvider>
-);
 
 export default App;
