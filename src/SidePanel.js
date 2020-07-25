@@ -52,7 +52,7 @@ function SidePanel(props) {
           color="primary"
           onClick={() => props.setItems("CCTV")}
         >
-          Trafford Council CCTV
+          Trafford Council CCTVs
         </Button>
         <Button
           variant="contained"

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Map, TileLayer, Pane } from "react-leaflet";
+import { Map, TileLayer, Pane, Marker } from "react-leaflet";
 
 import ApolloClient from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
@@ -10,6 +10,8 @@ import { setContext } from "apollo-link-context";
 import SidePanel from "./SidePanel";
 import ConservationAreas from "./ConservationAreas";
 import Libraries from "./Libraries";
+import ccctData from './CctvData.json'
+
 
 const httpLink = createHttpLink({
   uri: "http://localhost:4000/graphql",
@@ -42,21 +44,7 @@ const appContainer = {
 function App() {
   //which items to display i.e  all, libraires ConservationAreas
   const [items, setItems] = useState("All");
-  const [cctvLocations, setCctvLocations] = useState({});
 
-  useEffect(() => {
-    fetchCCTVdata();
-  }, []);
-
-  const fetchCCTVdata = async () => {
-    const response = await fetch(
-      "https://www.trafforddatalab.io/council_open_data/assets/cctv/cctv.geojson"
-    );
-
-    const data = await response.json();
-    setCctvLocations(data);
-    console.log(cctvLocations);
-  };
   return (
     <ApolloProvider client={client}>
       <div className="App" style={appContainer}>
@@ -72,6 +60,7 @@ function App() {
           )}
           {(items === "All" || items === "Libraries") && <Libraries />}
 
+          {(items === "All" || items === "CCTV") && <CCTVS />}
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -79,6 +68,30 @@ function App() {
         </Map>
       </div>
     </ApolloProvider>
+  );
+}
+function CCTVS() {
+  const [cctvLocationsRaw, setCctvLocationsRaw] = useState({});
+
+  useEffect(() => {
+    setCctvLocationsRaw(ccctData)
+  }, []);
+
+  useEffect(()=>{
+    console.log(cctvLocationsRaw.type);
+  }, [cctvLocationsRaw])
+
+
+
+  useEffect(() => {
+    const temCctvData = JSON.parse(JSON.stringify(cctvLocationsRaw));
+    console.log(temCctvData);
+  }, [cctvLocationsRaw]);
+
+  return (
+    <div>
+      <Marker position={[52.6, -1.2]}></Marker>
+    </div>
   );
 }
 
