@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Map, TileLayer, Pane } from "react-leaflet";
 
 import ApolloClient from "apollo-client";
@@ -7,7 +7,9 @@ import { createHttpLink } from "apollo-link-http";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { setContext } from "apollo-link-context";
 
+import SidePanel from "./SidePanel";
 import ConservationAreas from "./ConservationAreas";
+import Libraries from "./Libraries";
 
 const httpLink = createHttpLink({
   uri: "http://localhost:4000/graphql",
@@ -32,17 +34,28 @@ const leafletContainer = {
   width: "100vw",
 };
 
+const appContainer = {
+  display: "grid",
+  gridTemplateColumns: "200px 1fr",
+};
+
 function App() {
+  //which items to display i.e  all, libraires ConservationAreas
+  const [items, setItems] = useState("All");
   return (
     <ApolloProvider client={client}>
-      <div className="App">
+      <div className="App" style={appContainer}>
+        <SidePanel setItems={setItems} />
         <Map
           setZIndex={1}
           style={leafletContainer}
           center={[52.6, -1.2]}
           zoom={7}
         >
-          <ConservationAreas />
+          {(items === "All" || items === "ConservationAreas") && (
+            <ConservationAreas />
+          )}
+          {(items === "All" || items === "Libraries") && <Libraries />}
 
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -51,14 +64,6 @@ function App() {
         </Map>
       </div>
     </ApolloProvider>
-  );
-}
-
-function MapControls() {
-  return (
-    <div setZIndex={5}>
-      <h1>Mapper</h1>
-    </div>
   );
 }
 
