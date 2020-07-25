@@ -1,5 +1,5 @@
 import React from "react";
-import { Map, TileLayer } from "react-leaflet";
+import { Map, TileLayer, Pane } from "react-leaflet";
 
 import ApolloClient from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
@@ -37,19 +37,28 @@ function App() {
     <ApolloProvider client={client}>
       <div className="App">
         <Map
+          setZIndex={1}
           style={leafletContainer}
-          center={[51.5150432, -0.1020398]}
-          zoom={11}
+          center={[52.6, -1.2]}
+          zoom={7}
         >
+          <ConservationAreas />
+
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          />
-
-          <ConservationAreas />
+          ></TileLayer>
         </Map>
       </div>
     </ApolloProvider>
+  );
+}
+
+function MapControls() {
+  return (
+    <div setZIndex={5}>
+      <h1>Mapper</h1>
+    </div>
   );
 }
 
