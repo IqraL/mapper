@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { Polyline } from "react-leaflet";
@@ -551,14 +551,48 @@ const polyline = [
 
 function ConservationAreas() {
   const { loading, error, data } = useQuery(CONVERSATION_AREAS);
+  const [polylines, setpolylines] = useState([]);
+
+  const reverseCoordiates = async (data) => {
+    const conservationAreasProcessed = [];
+    //console.log(data);
+    if (data)
+      data.forEach((area) => {
+        const areaTemp = [];
+        area.forEach((coordinates) => {
+          const coordinateTemp = [];
+          coordinateTemp.push(coordinates[1]);
+          coordinateTemp.push(coordinates[0]);
+          areaTemp.push(coordinateTemp);
+        });
+        conservationAreasProcessed.push(areaTemp);
+      });
+    //console.log(conservationAreasProcessed);
+    return conservationAreasProcessed;
+  };
 
   useEffect(() => {
-    console.log("602");
-    console.log(data);
-  }, [data]);
+    try {
+      if (error) throw error;
+
+      //console.log(data);
+
+      reverseCoordiates(data.getConservationAreas).then((areas) => {
+        console.log("581");
+        console.log(areas);
+        setpolylines(areas);
+      });
+      //setpolylines(data.getConservationAreas);
+    } catch (e) {
+      console.log(e);
+    }
+  }, [data, loading, error]);
 
   return (
     <div>
+      {polylines.map((line) => (
+        <Polyline color="lime" fillOpacity="1" weight="5" positions={line} />
+      ))}
       <Polyline color="lime" fillOpacity="1" weight="5" positions={polyline} />
     </div>
   );
