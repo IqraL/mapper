@@ -17,15 +17,19 @@ function ConservationAreas() {
     try {
       if (error) throw error;
       setpolylines(data.getConservationAreas);
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   }, [data, loading, error]);
 
   return (
     <div>
-      {polylines.map((line) => (
-        <Polyline color="lime" fillOpacity="1" weight="5" positions={line} />
+      {polylines.map((line, i) => (
+        <Polyline
+          key={`${i}_poplylineKey`}
+          color="lime"
+          fillOpacity="1"
+          weight="5"
+          positions={line}
+        />
       ))}
     </div>
   );
