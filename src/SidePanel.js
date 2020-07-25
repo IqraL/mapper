@@ -26,13 +26,40 @@ function SidePanel(props) {
       <h1>Mapper</h1>
       <div style={subHeading}>What would you like to map</div>
       <div style={itemPickerUI}>
-        <button onClick={() => props.setItems("All")}>Everything</button>
-        <button onClick={() => props.setItems("ConservationAreas")}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => props.setItems("All")}
+        >
+          Everything
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => props.setItems("ConservationAreas")}
+        >
           ConservationAreas
-        </button>
-        <button onClick={() => props.setItems("Libraries")}>Libraries</button>
-        <Button variant="contained" color="primary">
-          Button
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => props.setItems("Libraries")}
+        >
+          Libraries
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => props.setItems("CCTV")}
+        >
+          Trafford Council CCTV
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => props.setItems("Clear")}
+        >
+          Clear Map
         </Button>
       </div>
     </div>

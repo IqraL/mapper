@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Map, TileLayer, Pane } from "react-leaflet";
 
 import ApolloClient from "apollo-client";
@@ -42,6 +42,21 @@ const appContainer = {
 function App() {
   //which items to display i.e  all, libraires ConservationAreas
   const [items, setItems] = useState("All");
+  const [cctvLocations, setCctvLocations] = useState({});
+
+  useEffect(() => {
+    fetchCCTVdata();
+  }, []);
+
+  const fetchCCTVdata = async () => {
+    const response = await fetch(
+      "https://www.trafforddatalab.io/council_open_data/assets/cctv/cctv.geojson"
+    );
+
+    const data = await response.json();
+    setCctvLocations(data);
+    console.log(cctvLocations);
+  };
   return (
     <ApolloProvider client={client}>
       <div className="App" style={appContainer}>
