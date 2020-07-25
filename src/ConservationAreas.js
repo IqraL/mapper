@@ -1,46 +1,13 @@
-import React, { useEffect, useState } from "react";
-import {
-  Map,
-  Marker,
-  Popup,
-  TileLayer,
-  CircleMarker,
-  Polyline,
-} from "react-leaflet";
-import { Icon } from "leaflet";
+import React, { useEffect } from "react";
+import { useQuery } from "@apollo/react-hooks";
+import gql from "graphql-tag";
+import { Polyline } from "react-leaflet";
 
-import ApolloClient from "apollo-client";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import { createHttpLink } from "apollo-link-http";
-import { ApolloProvider } from "@apollo/react-hooks";
-import { setContext } from "apollo-link-context";
-
-import ConservationAreas from "./ConservationAreas";
-
-import librariesRaw from "./Libraries";
-
-const httpLink = createHttpLink({
-  uri: "http://localhost:4000/graphql",
-});
-
-const authLink = setContext(() => {
-  const token = localStorage.getItem("jwtToken");
-  return {
-    headers: {
-      Authorization: token ? `Bearer ${token}` : "",
-    },
-  };
-});
-
-const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
-});
-
-const leafletContainer = {
-  height: "100vh",
-  width: "100vw",
-};
+const CONVERSATION_AREAS = gql`
+  query getConversationAreas {
+    getConservationAreas
+  }
+`;
 
 const polyline = [
   [52.907178626321972, -1.228548221297923],
@@ -582,62 +549,25 @@ const polyline = [
   [52.907178626321972, -1.228548221297923],
 ];
 
-export const bookIcon = new Icon({
-  iconUrl:
-    "https://toppng.com/uploads/preview/open-book-svg-free-115494209952k9hksaijn.png",
-  iconSize: [10, 10],
-});
-
-function App() {
-  const [librariesProcessed, setlibrariesProcessed] = useState([]);
+function ConservationAreas() {
+  const { loading, error, data } = useQuery(CONVERSATION_AREAS);
 
   useEffect(() => {
-    //add id to each library object from the raw data
-    setlibrariesProcessed(
-      librariesRaw.features.map((libraryObj) => {
-        const libraryDetail = `${libraryObj.properties.NAME} ${libraryObj.properties.TELEPHONE}`;
-        const id = Math.floor(Math.random() * Math.floor(500));
-        return {
-          id,
-          details: libraryObj.properties,
-          coordinates: libraryObj.geometry.coordinates,
-        };
-      })
-    );
-
-    //console.log(addedId);
-  }, []);
+    console.log("602");
+    console.log(data);
+  }, [data]);
 
   return (
-    <ApolloProvider client={client}>
-      <div className="App">
-        <Map style={leafletContainer} center={[53.480709, -2.23438]} zoom={8}>
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          />
-
-          {librariesProcessed.map((library) => (
-            <Marker
-              position={[library.coordinates[1], library.coordinates[0]]}
-              icon={bookIcon}
-            >
-              <Popup>
-                {library.details.NAME}
-                <br></br>
-                {library.details.ADDRESS_1}
-                <br></br>
-                {library.details.POSTCODE}
-                <br></br>
-                {library.details.TELEPHONE}
-              </Popup>
-            </Marker>
-          ))}
-          <ConservationAreas />
-        </Map>
-      </div>
-    </ApolloProvider>
+    <div>
+      <Polyline color="lime" fillOpacity="1" weight="5" positions={polyline} />
+    </div>
   );
 }
 
-export default App;
+export default ConservationAreas;
+// const { loading, error, data } = useQuery(CONVERSATION_AREAS);
+//
+// useEffect(() => {
+//   console.log("602");
+//   console.log(data);
+// }, [data]);
