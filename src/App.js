@@ -9,7 +9,6 @@ import { setContext } from "apollo-link-context";
 
 import ConservationAreas from "./ConservationAreas";
 
-import "./App.css";
 const httpLink = createHttpLink({
   uri: "http://localhost:4000/graphql",
 });
