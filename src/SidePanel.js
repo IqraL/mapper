@@ -1,6 +1,5 @@
 import React from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 
 const mapControlLayerUI = {
@@ -21,6 +20,8 @@ const itemPickerUI = {
 };
 
 function SidePanel(props) {
+  const itemChange = (item) => props.setItems(item);
+
   return (
     <div style={mapControlLayerUI}>
       <h1>Mapper</h1>
@@ -29,35 +30,35 @@ function SidePanel(props) {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => props.setItems("All")}
+          onClick={() => itemChange("All")}
         >
           Everything
         </Button>
         <Button
           variant="contained"
           color="primary"
-          onClick={() => props.setItems("ConservationAreas")}
+          onClick={() => itemChange("ConservationAreas")}
         >
           ConservationAreas
         </Button>
         <Button
           variant="contained"
           color="primary"
-          onClick={() => props.setItems("Libraries")}
+          onClick={() => itemChange("Libraries")}
         >
           Libraries
         </Button>
         <Button
           variant="contained"
           color="primary"
-          onClick={() => props.setItems("CCTV")}
+          onClick={() => itemChange("CCTV")}
         >
           Trafford Council CCTVs
         </Button>
         <Button
           variant="contained"
           color="primary"
-          onClick={() => props.setItems("Clear")}
+          onClick={() => itemChange("Clear")}
         >
           Clear Map
         </Button>

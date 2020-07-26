@@ -16,7 +16,6 @@ function Libraries() {
   useEffect(() => {
     setlibrariesProcessed(
       librariesRaw.features.map((libraryObj) => {
-        const libraryDetail = `${libraryObj.properties.NAME} ${libraryObj.properties.TELEPHONE}`;
         const id = Math.floor(Math.random() * Math.floor(500));
         return {
           id,
@@ -31,6 +30,7 @@ function Libraries() {
     <div>
       {librariesProcessed.map((library) => (
         <Marker
+          key={`${library.details.NAME}_${library.details.TELEPHONE}`}
           position={[library.coordinates[1], library.coordinates[0]]}
           icon={bookIcon}
         >

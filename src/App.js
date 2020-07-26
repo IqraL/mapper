@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Map, TileLayer, Pane, Marker } from "react-leaflet";
+import React, { useState, useRef } from "react";
+import { Map, TileLayer } from "react-leaflet";
 
 import ApolloClient from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
@@ -10,8 +10,7 @@ import { setContext } from "apollo-link-context";
 import SidePanel from "./SidePanel";
 import ConservationAreas from "./ConservationAreas";
 import Libraries from "./Libraries";
-import ccctData from './CctvData.json'
-
+import CCTVS from "./CCTV";
 
 const httpLink = createHttpLink({
   uri: "http://localhost:4000/graphql",
@@ -48,13 +47,8 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <div className="App" style={appContainer}>
-        <SidePanel setItems={setItems} />
-        <Map
-          setZIndex={1}
-          style={leafletContainer}
-          center={[52.6, -1.2]}
-          zoom={7}
-        >
+        <SidePanel setItems={setItems} permanent />
+        <Map style={leafletContainer} center={[52.6, -1.2]} zoom={7}>
           {(items === "All" || items === "ConservationAreas") && (
             <ConservationAreas />
           )}
@@ -68,30 +62,6 @@ function App() {
         </Map>
       </div>
     </ApolloProvider>
-  );
-}
-function CCTVS() {
-  const [cctvLocationsRaw, setCctvLocationsRaw] = useState({});
-
-  useEffect(() => {
-    setCctvLocationsRaw(ccctData)
-  }, []);
-
-  useEffect(()=>{
-    console.log(cctvLocationsRaw.type);
-  }, [cctvLocationsRaw])
-
-
-
-  useEffect(() => {
-    const temCctvData = JSON.parse(JSON.stringify(cctvLocationsRaw));
-    console.log(temCctvData);
-  }, [cctvLocationsRaw]);
-
-  return (
-    <div>
-      <Marker position={[52.6, -1.2]}></Marker>
-    </div>
   );
 }
 
