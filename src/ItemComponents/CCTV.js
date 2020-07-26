@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import cctvDataraw from "./CctvData.json";
+import cctvDataraw from "../data/CctvData.json";
 import { Marker } from "react-leaflet";
 import { Icon } from "leaflet";
 

@@ -8,9 +8,9 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import { setContext } from "apollo-link-context";
 
 import SidePanel from "./SidePanel";
-import ConservationAreas from "./ConservationAreas";
-import Libraries from "./Libraries";
-import CCTVS from "./CCTV";
+import ConservationAreas from "./ItemComponents/ConservationAreas";
+import Libraries from "./ItemComponents/Libraries";
+import CCTVS from "./ItemComponents/CCTV";
 
 const httpLink = createHttpLink({
   uri: "http://localhost:4000/graphql",

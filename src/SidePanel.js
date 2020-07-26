@@ -39,14 +39,14 @@ function SidePanel(props) {
           color="primary"
           onClick={() => itemChange("ConservationAreas")}
         >
-          ConservationAreas
+          Conservation Areas
         </Button>
         <Button
           variant="contained"
           color="primary"
           onClick={() => itemChange("Libraries")}
         >
-          Libraries
+          Plymouth City Council Libraries
         </Button>
         <Button
           variant="contained"

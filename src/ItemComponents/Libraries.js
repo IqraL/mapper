@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import librariesRaw from "./LibrariesData";
+import librariesRaw from "../data/LibrariesData";
 
 import { Marker, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
