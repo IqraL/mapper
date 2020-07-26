@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Map, TileLayer } from "react-leaflet";
 
 import ApolloClient from "apollo-client";
@@ -47,7 +47,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <div className="App" style={appContainer}>
-        <SidePanel setItems={setItems} permanent />
+        <SidePanel setItems={setItems} />
         <Map style={leafletContainer} center={[52.6, -1.2]} zoom={7}>
           {(items === "All" || items === "ConservationAreas") && (
             <ConservationAreas />

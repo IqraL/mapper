@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ccctData from "./CctvData.json";
+import cctvDataraw from "./CctvData.json";
 import { Marker } from "react-leaflet";
 import { Icon } from "leaflet";
 
@@ -13,7 +13,7 @@ function CCTVS() {
   const [cctvProcessedLoc, setCctvProcessedLoc] = useState([]);
 
   useEffect(() => {
-    setCctvLocationsRaw(ccctData);
+    setCctvLocationsRaw(cctvDataraw);
   }, []);
 
   useEffect(() => {
