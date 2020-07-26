@@ -1,7 +1,19 @@
 import React, { useEffect, useState } from "react";
 import cctvDataraw from "../data/CctvData.json";
-import { Marker } from "react-leaflet";
+import { Marker, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
+
+import { useQuery } from "@apollo/react-hooks";
+import gql from "graphql-tag";
+
+const GET_CCTV_DATA = gql`
+  query getCctvData {
+    getCctvLocations {
+      points
+      location
+    }
+  }
+`;
 
 const cctvIcon = new Icon({
   iconUrl:
@@ -11,34 +23,25 @@ const cctvIcon = new Icon({
 function CCTVS() {
   const [cctvLocationsRaw, setCctvLocationsRaw] = useState({});
   const [cctvProcessedLoc, setCctvProcessedLoc] = useState([]);
+  const { data, error } = useQuery(GET_CCTV_DATA);
 
   useEffect(() => {
-    setCctvLocationsRaw(cctvDataraw);
-  }, []);
+    if (error) setCctvProcessedLoc([]);
 
-  useEffect(() => {
-    if (
-      Object.keys(cctvLocationsRaw).length !== 0 &&
-      cctvLocationsRaw.constructor === Object
-    )
-      processCCTVdata();
-  }, [cctvLocationsRaw]);
-
-  const processCCTVdata = () => {
-    const rawCctv = cctvLocationsRaw.features;
-    setCctvProcessedLoc(
-      rawCctv.map((cctvData) => cctvData.geometry.coordinates)
-    );
-  };
+    if (data && data.getCctvLocations)
+      setCctvProcessedLoc(data.getCctvLocations);
+  }, [data, error]);
 
   return (
     <div>
-      {cctvProcessedLoc.map((point) => (
+      {cctvProcessedLoc.map((cctv) => (
         <Marker
-          key={`${point[1]}`}
+          key={`${cctv.points[1]}`}
           icon={cctvIcon}
-          position={[point[1], point[0]]}
-        ></Marker>
+          position={[cctv.points[0], cctv.points[1]]}
+        >
+          <Popup>{cctv.location}</Popup>
+        </Marker>
       ))}
     </div>
   );
