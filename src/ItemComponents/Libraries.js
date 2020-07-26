@@ -1,8 +1,21 @@
 import React, { useEffect, useState } from "react";
-import librariesRaw from "../data/LibrariesData";
+import { useQuery } from "@apollo/react-hooks";
+import gql from "graphql-tag";
 
 import { Marker, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
+
+const GET_LIBRARIES_DATA = gql`
+  query getLibraries {
+    getLibraries {
+      name
+      address
+      postcode
+      telepone
+      points
+    }
+  }
+`;
 
 export const bookIcon = new Icon({
   iconUrl:
@@ -12,36 +25,29 @@ export const bookIcon = new Icon({
 
 function Libraries() {
   const [librariesProcessed, setlibrariesProcessed] = useState([]);
+  const { data, error } = useQuery(GET_LIBRARIES_DATA);
 
   useEffect(() => {
-    setlibrariesProcessed(
-      librariesRaw.features.map((libraryObj) => {
-        const id = Math.floor(Math.random() * Math.floor(500));
-        return {
-          id,
-          details: libraryObj.properties,
-          coordinates: libraryObj.geometry.coordinates,
-        };
-      })
-    );
-  }, []);
+    if (error) setlibrariesProcessed();
+    if (data && data.getLibraries) setlibrariesProcessed(data.getLibraries);
+  }, [data, error]);
 
   return (
     <div>
       {librariesProcessed.map((library) => (
         <Marker
-          key={`${library.details.NAME}_${library.details.TELEPHONE}`}
-          position={[library.coordinates[1], library.coordinates[0]]}
+          key={`${library.name}_${library.telepone}`}
+          position={[library.points[0], library.points[1]]}
           icon={bookIcon}
         >
           <Popup>
-            {library.details.NAME}
+            {library.name}
             <br></br>
-            {library.details.ADDRESS_1}
+            {library.address}
             <br></br>
-            {library.details.POSTCODE}
+            {library.postcode}
             <br></br>
-            {library.details.TELEPHONE}
+            {library.telepone}
           </Popup>
         </Marker>
       ))}
