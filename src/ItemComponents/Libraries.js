@@ -28,7 +28,7 @@ function Libraries() {
   const { data, error } = useQuery(GET_LIBRARIES_DATA);
 
   useEffect(() => {
-    if (error) setlibrariesProcessed();
+    if (error) setlibrariesProcessed([]);
     if (data && data.getLibraries) setlibrariesProcessed(data.getLibraries);
   }, [data, error]);
 
