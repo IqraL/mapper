@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import cctvDataraw from "../data/CctvData.json";
 import { Marker, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
 
@@ -46,4 +45,5 @@ function CCTVS() {
     </div>
   );
 }
+
 export default CCTVS;

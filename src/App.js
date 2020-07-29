@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Map, TileLayer } from "react-leaflet";
+import { Map, TileLayer, Popup } from "react-leaflet";
 
 import ApolloClient from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
@@ -11,6 +11,8 @@ import SidePanel from "./SidePanel";
 import ConservationAreas from "./ItemComponents/ConservationAreas";
 import Libraries from "./ItemComponents/Libraries";
 import CCTVS from "./ItemComponents/CCTV";
+import RailStaions from "./ItemComponents/RailStations";
+import { CENTER, INITAL_ZOOM } from "./consts";
 
 const httpLink = createHttpLink({
   uri: "http://localhost:4000/graphql",
@@ -39,8 +41,6 @@ const appContainer = {
   display: "grid",
   gridTemplateColumns: "200px 1fr",
 };
-const CENTER = [52.6, -1.2];
-const INITAL_ZOOM = 7;
 
 function App() {
   //which items to display i.e  all, libraires ConservationAreas
@@ -59,7 +59,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <div className="App" style={appContainer}>
-        <SidePanel resetZoom={resetZoom} setItems={setItems} />
+        <SidePanel mapRef={mapRef} resetZoom={resetZoom} setItems={setItems} />
         <Map
           ref={mapRef}
           style={leafletContainer}
@@ -72,6 +72,8 @@ function App() {
           {(items === "All" || items === "Libraries") && <Libraries />}
 
           {(items === "All" || items === "CCTV") && <CCTVS />}
+
+          {(items === "All" || items === "RailwayStations") && <RailStaions />}
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
