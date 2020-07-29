@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Map, TileLayer } from "react-leaflet";
 
 import ApolloClient from "apollo-client";
@@ -39,16 +39,33 @@ const appContainer = {
   display: "grid",
   gridTemplateColumns: "200px 1fr",
 };
+const CENTER = [52.6, -1.2];
+const INITAL_ZOOM = 7;
 
 function App() {
   //which items to display i.e  all, libraires ConservationAreas
+  const mapRef = useRef();
+
   const [items, setItems] = useState("All");
+
+  const resetZoom = () => {
+    const { current = {} } = mapRef;
+    const { leafletElement } = current;
+    if (leafletElement) {
+      leafletElement.setView(CENTER, INITAL_ZOOM);
+    }
+  };
 
   return (
     <ApolloProvider client={client}>
       <div className="App" style={appContainer}>
-        <SidePanel setItems={setItems} />
-        <Map style={leafletContainer} center={[52.6, -1.2]} zoom={7}>
+        <SidePanel resetZoom={resetZoom} setItems={setItems} />
+        <Map
+          ref={mapRef}
+          style={leafletContainer}
+          center={CENTER}
+          zoom={INITAL_ZOOM}
+        >
           {(items === "All" || items === "ConservationAreas") && (
             <ConservationAreas />
           )}

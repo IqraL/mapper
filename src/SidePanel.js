@@ -20,7 +20,10 @@ const itemPickerUI = {
 };
 
 function SidePanel(props) {
-  const itemChange = (item) => props.setItems(item);
+  const itemChange = (item) => {
+    props.setItems(item);
+    props.resetZoom();
+  };
 
   return (
     <div style={mapControlLayerUI}>
