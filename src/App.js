@@ -48,18 +48,10 @@ function App() {
 
   const [items, setItems] = useState("All");
 
-  const resetZoom = () => {
-    const { current = {} } = mapRef;
-    const { leafletElement } = current;
-    if (leafletElement) {
-      leafletElement.setView(CENTER, INITAL_ZOOM);
-    }
-  };
-
   return (
     <ApolloProvider client={client}>
       <div className="App" style={appContainer}>
-        <SidePanel mapRef={mapRef} resetZoom={resetZoom} setItems={setItems} />
+        <SidePanel mapRef={mapRef} setItems={setItems} />
         <Map
           ref={mapRef}
           style={leafletContainer}
